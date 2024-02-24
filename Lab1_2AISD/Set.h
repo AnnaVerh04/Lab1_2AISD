@@ -1,11 +1,11 @@
 #include <iostream>
 
 template<typename T>
-struct Node
+struct node
 {
     T key_value;
-    Node* left;
-    Node* right;
+    node* left;
+    node* right;
 };
 
 template<typename T>
@@ -31,7 +31,7 @@ public:
     }
 
     void insert(T key) {
-        Node<T>* p = new Node<T>;
+        node<T>* p = new node<T>;
         p->key_value = key;
         p->left = nullptr;
         p->right = nullptr;
@@ -41,8 +41,8 @@ public:
             return;
         }
 
-        Node<T>* ptr = this->_root;
-        Node<T>* parent = nullptr;
+        node<T>* ptr = this->_root;
+        node<T>* parent = nullptr;
 
         while (ptr != nullptr) {
             parent = ptr;
@@ -61,7 +61,7 @@ public:
         if (this->_root == nullptr)
             return false;
 
-        Node<T>* ptr = this->_root;
+        node<T>* ptr = this->_root;
 
         while (ptr != nullptr) {
             if (ptr->key_value == key)
@@ -82,7 +82,7 @@ public:
     }
 
 private:
-    void _print_node(Node<T>* ptr) {
+    void _print_node(node<T>* ptr) {
         if (ptr != nullptr) {
             this->_print_node(ptr->left);
             std::cout << "  " << ptr->key_value << "     ";
@@ -90,7 +90,7 @@ private:
         }
     }
 
-    void _free_node(Node<T>* ptr) {
+    void _free_node(node<T>* ptr) {
         if (ptr != nullptr) {
             this->_free_node(ptr->left);
             this->_free_node(ptr->right);
@@ -99,9 +99,9 @@ private:
         }
     }
 
-    Node<T>* _delete_node(Node<T>* root, int k)
+    node<T>* _delete_node(node<T>* root, int k)
     {
-        
+        // Base case
         if (root == NULL)
             return root;
 
@@ -114,24 +114,24 @@ private:
             return root;
         }
 
-        
+        // If one of the children is empty
         if (root->left == NULL) {
-            Node<T>* temp = root->right;
+            node<T>* temp = root->right;
             delete root;
             return temp;
         }
         else if (root->right == NULL) {
-            Node<T>* temp = root->left;
+            node<T>* temp = root->left;
             delete root;
             return temp;
         }
 
-        
+        // If both children exist
         else {
-            Node<T>* succParent = root;
+            node<T>* succParent = root;
 
-            
-            Node<T>* succ = root->right;
+            // Find successor
+            node<T>* succ = root->right;
             while (succ->left != NULL) {
                 succParent = succ;
                 succ = succ->left;
@@ -149,7 +149,7 @@ private:
         }
     }
 
-    void _insert_all_child(Node<T>* ptr) {
+    void _insert_all_child(node<T>* ptr) {
         if (ptr == nullptr)
             return;
         this->insert(ptr->key_value);
@@ -157,6 +157,5 @@ private:
         this->_insert_all_child(ptr->right);
     }
 
-    Node<T>* _root;
+    node<T>* _root;
 };
-
