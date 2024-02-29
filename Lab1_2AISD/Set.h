@@ -24,6 +24,18 @@ public:
         this->_free_node(this->_root);
     }
 
+    Set& operator=(const Set<T>& other) {
+        if (this != &other) {
+            // Очищаем текущее дерево
+            this->_free_node(this->_root);
+            this->_root = nullptr;
+
+            // Копируем дерево из другого объекта
+            this->_insert_all_child(other._root);
+        }
+        return *this;
+    }
+
     void print()
     {
         this->_print_node(this->_root);
