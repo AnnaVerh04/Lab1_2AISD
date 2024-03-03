@@ -11,6 +11,8 @@ struct node
 template<typename T>
 class Set {
 public:
+    node<T>* _root;
+
     Set() {
         this->_root = nullptr;
     }
@@ -26,11 +28,11 @@ public:
 
     Set& operator=(const Set<T>& other) {
         if (this != &other) {
-            // Очищаем текущее дерево
+            
             this->_free_node(this->_root);
             this->_root = nullptr;
 
-            // Копируем дерево из другого объекта
+            
             this->_insert_all_child(other._root);
         }
         return *this;
@@ -96,8 +98,9 @@ public:
 private:
     void _print_node(node<T>* ptr) {
         if (ptr != nullptr) {
-            this->_print_node(ptr->left);
             std::cout << "  " << ptr->key_value << "     ";
+            this->_print_node(ptr->left);
+            
             this->_print_node(ptr->right);
         }
     }
@@ -113,7 +116,7 @@ private:
 
     node<T>* _delete_node(node<T>* root, int k)
     {
-        // Base case
+      
         if (root == NULL)
             return root;
 
@@ -126,7 +129,7 @@ private:
             return root;
         }
 
-        // If one of the children is empty
+        
         if (root->left == NULL) {
             node<T>* temp = root->right;
             delete root;
@@ -138,11 +141,11 @@ private:
             return temp;
         }
 
-        // If both children exist
+        
         else {
             node<T>* succParent = root;
 
-            // Find successor
+            
             node<T>* succ = root->right;
             while (succ->left != NULL) {
                 succParent = succ;
@@ -162,12 +165,20 @@ private:
     }
 
     void _insert_all_child(node<T>* ptr) {
-        if (ptr == nullptr)
+        if (ptr == nullptr) {
             return;
-        this->insert(ptr->key_value);
-        this->_insert_all_child(ptr->left);
-        this->_insert_all_child(ptr->right);
+        }
+
+        insert(ptr->key_value);  
+
+        if (ptr->left != nullptr) {
+            _insert_all_child(ptr->left);  
+        }
+
+        if (ptr->right != nullptr) {
+            _insert_all_child(ptr->right);  
+        }
     }
 
-    node<T>* _root;
+    
 };
