@@ -28,11 +28,11 @@ public:
 
     Set& operator=(const Set<T>& other) {
         if (this != &other) {
-            
+
             this->_free_node(this->_root);
             this->_root = nullptr;
 
-            
+
             this->_insert_all_child(other._root);
         }
         return *this;
@@ -100,7 +100,7 @@ private:
         if (ptr != nullptr) {
             std::cout << "  " << ptr->key_value << "     ";
             this->_print_node(ptr->left);
-            
+
             this->_print_node(ptr->right);
         }
     }
@@ -116,7 +116,7 @@ private:
 
     node<T>* _delete_node(node<T>* root, int k)
     {
-      
+
         if (root == NULL)
             return root;
 
@@ -129,7 +129,7 @@ private:
             return root;
         }
 
-        
+
         if (root->left == NULL) {
             node<T>* temp = root->right;
             delete root;
@@ -141,11 +141,11 @@ private:
             return temp;
         }
 
-        
+
         else {
             node<T>* succParent = root;
 
-            
+
             node<T>* succ = root->right;
             while (succ->left != NULL) {
                 succParent = succ;
@@ -164,21 +164,18 @@ private:
         }
     }
 
-    void _insert_all_child(node<T>* ptr) {
-        if (ptr == nullptr) {
-            return;
-        }
+    node<T>* _insert_all_child(node<T>* ptr) {
+        if (ptr == nullptr)
+            return nullptr;
 
-        insert(ptr->key_value);  
+        node<T>* newNode = new node<T>;
+        newNode->key_value = ptr->key_value;
+        newNode->left = _insert_all_child(ptr->left);
+        newNode->right = _insert_all_child(ptr->right);
 
-        if (ptr->left != nullptr) {
-            _insert_all_child(ptr->left);  
-        }
-
-        if (ptr->right != nullptr) {
-            _insert_all_child(ptr->right);  
-        }
+        return newNode;
     }
+
 
     
 };
